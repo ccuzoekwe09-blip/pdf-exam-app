@@ -66,7 +66,6 @@ export default function TakeExamPage() {
     loadData();
   }, [examId]);
 
-  // Load saved progress
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (!saved) return;
@@ -79,7 +78,6 @@ export default function TakeExamPage() {
     setInputMinutes(parsed.inputMinutes || 25);
   }, [storageKey]);
 
-  // Save progress
   useEffect(() => {
     localStorage.setItem(
       storageKey,
@@ -186,7 +184,14 @@ export default function TakeExamPage() {
         <h1 style={{ color: "black" }}>Results</h1>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 2.5fr", gap: 24 }}>
-          <div style={{ background: "white", padding: 12, maxHeight: 900, overflowY: "scroll" }}>
+          <div
+            style={{
+              background: "white",
+              padding: 12,
+              maxHeight: 900,
+              overflowY: "scroll",
+            }}
+          >
             {questions.map((q) => {
               const selected = answers[q.id];
               const isCorrect = selected === q.correct_answer;
@@ -302,6 +307,47 @@ export default function TakeExamPage() {
               {choice}
             </button>
           ))}
+
+          <div style={{ marginTop: 20 }}>
+            <h4>Questions</h4>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gap: 6,
+                marginTop: 8,
+                maxHeight: 220,
+                overflowY: "auto",
+              }}
+            >
+              {questions.map((q, i) => {
+                const isAnswered = answers[q.id];
+                const isFlagged = flagged[q.id];
+
+                return (
+                  <button
+                    key={q.id}
+                    onClick={() => setCurrentIndex(i)}
+                    style={{
+                      padding: 8,
+                      fontSize: 12,
+                      background: isFlagged
+                        ? "#facc15"
+                        : isAnswered
+                        ? "#2563eb"
+                        : "#e5e7eb",
+                      color: isAnswered ? "white" : "black",
+                      border: currentIndex === i ? "3px solid black" : "1px solid black",
+                      fontWeight: currentIndex === i ? "bold" : "normal",
+                    }}
+                  >
+                    {q.question_number}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           <div style={{ marginTop: 20 }}>
             <button
