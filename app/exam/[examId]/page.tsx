@@ -179,9 +179,52 @@ export default function TakeExamPage() {
   }
 
   if (showResults) {
+    let correct = 0;
+    let incorrect = 0;
+
+    questions.forEach((q) => {
+      if (answers[q.id]) {
+        if (answers[q.id] === q.correct_answer) correct++;
+        else incorrect++;
+      }
+    });
+
+    const total = questions.length;
+    const unanswered = total - correct - incorrect;
+    const percentCorrect = total ? ((correct / total) * 100).toFixed(1) : "0.0";
+    const percentIncorrect = total
+      ? ((incorrect / total) * 100).toFixed(1)
+      : "0.0";
+    const percentUnanswered = total
+      ? ((unanswered / total) * 100).toFixed(1)
+      : "0.0";
+
     return (
       <main style={{ background: "#dbeafe", minHeight: "100vh", padding: 24 }}>
         <h1 style={{ color: "black" }}>Results</h1>
+
+        <div
+          style={{
+            background: "white",
+            padding: 16,
+            marginBottom: 20,
+            border: "2px solid black",
+            color: "black",
+          }}
+        >
+          <p>
+            <strong>Total Questions:</strong> {total}
+          </p>
+          <p>
+            <strong>Correct:</strong> {correct} ({percentCorrect}%)
+          </p>
+          <p>
+            <strong>Incorrect:</strong> {incorrect} ({percentIncorrect}%)
+          </p>
+          <p>
+            <strong>Unanswered:</strong> {unanswered} ({percentUnanswered}%)
+          </p>
+        </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 2.5fr", gap: 24 }}>
           <div
@@ -195,6 +238,7 @@ export default function TakeExamPage() {
             {questions.map((q) => {
               const selected = answers[q.id];
               const isCorrect = selected === q.correct_answer;
+              const isUnanswered = !selected;
 
               return (
                 <div
@@ -203,7 +247,12 @@ export default function TakeExamPage() {
                     marginTop: 8,
                     padding: 8,
                     fontSize: 13,
-                    background: isCorrect ? "#bfdbfe" : "#fecaca",
+                    background: isUnanswered
+                      ? "#e5e7eb"
+                      : isCorrect
+                      ? "#bfdbfe"
+                      : "#fecaca",
+                    color: "black",
                   }}
                 >
                   Q{q.question_number}: {selected || "-"} | {q.correct_answer}
@@ -372,19 +421,19 @@ export default function TakeExamPage() {
             </div>
 
             <button
-  onClick={() => setShowResults(true)}
-  style={{
-    marginTop: 12,
-    width: "100%",
-    padding: 12,
-    background: "#991b1b",
-    color: "white",
-    fontWeight: "bold",
-    border: "2px solid black",
-  }}
->
-  Submit Exam
-</button>
+              onClick={() => setShowResults(true)}
+              style={{
+                marginTop: 12,
+                width: "100%",
+                padding: 12,
+                background: "#991b1b",
+                color: "white",
+                fontWeight: "bold",
+                border: "2px solid black",
+              }}
+            >
+              Submit Exam
+            </button>
           </div>
 
           <button onClick={clearProgress} style={{ marginTop: 12, width: "100%" }}>
