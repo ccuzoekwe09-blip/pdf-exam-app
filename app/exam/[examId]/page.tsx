@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useParams } from "next/navigation";
 
-const CHOICES = ["A", "B", "C", "D", "E"];
+const CHOICES = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 export default function TakeExamPage() {
   const params = useParams();
@@ -297,16 +297,39 @@ export default function TakeExamPage() {
                 display: "block",
                 width: "100%",
                 marginTop: 10,
-                padding: 16,
+                padding: 14,
                 background: answers[current.id] === choice ? "#2563eb" : "black",
                 color: "white",
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: "bold",
               }}
             >
               {choice}
             </button>
           ))}
+
+          <div style={{ marginTop: 20 }}>
+            <button
+              disabled={currentIndex === 0}
+              onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
+            >
+              Prev
+            </button>
+
+            <button
+              disabled={currentIndex === questions.length - 1}
+              onClick={() =>
+                setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))
+              }
+              style={{ marginLeft: 8 }}
+            >
+              Next
+            </button>
+
+            <button onClick={() => setShowReview(true)} style={{ marginLeft: 8 }}>
+              Review
+            </button>
+          </div>
 
           <div style={{ marginTop: 20 }}>
             <h4>Questions</h4>
@@ -347,27 +370,20 @@ export default function TakeExamPage() {
                 );
               })}
             </div>
-          </div>
-
-          <div style={{ marginTop: 20 }}>
-            <button
-              disabled={currentIndex === 0}
-              onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
-            >
-              Prev
-            </button>
 
             <button
-              disabled={currentIndex === questions.length - 1}
-              onClick={() =>
-                setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))
-              }
+              onClick={() => setShowReview(true)}
+              style={{
+                marginTop: 12,
+                width: "100%",
+                padding: 12,
+                background: "#991b1b",
+                color: "white",
+                fontWeight: "bold",
+                border: "2px solid black",
+              }}
             >
-              Next
-            </button>
-
-            <button onClick={() => setShowReview(true)} style={{ marginLeft: 10 }}>
-              Review
+              End Exam Early
             </button>
           </div>
 
