@@ -372,19 +372,19 @@ export default function TakeExamPage() {
             </div>
 
             <button
-              onClick={() => setShowReview(true)}
-              style={{
-                marginTop: 12,
-                width: "100%",
-                padding: 12,
-                background: "#991b1b",
-                color: "white",
-                fontWeight: "bold",
-                border: "2px solid black",
-              }}
-            >
-              End Exam Early
-            </button>
+  onClick={() => setShowResults(true)}
+  style={{
+    marginTop: 12,
+    width: "100%",
+    padding: 12,
+    background: "#991b1b",
+    color: "white",
+    fontWeight: "bold",
+    border: "2px solid black",
+  }}
+>
+  Submit Exam
+</button>
           </div>
 
           <button onClick={clearProgress} style={{ marginTop: 12, width: "100%" }}>
